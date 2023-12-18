@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Задание 5</title>
+        <base href="/">
+        <link rel="stylesheet" type="text/css" href="static/main.css">
+    </head>
+    <body>
+        <div id="showMoviesBlock">
+            <p>Удалены фильмы:</p>
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Страна</th>
+                    <th>Дата выхода</th>
+                    <th>Режиссёры</th>
+                    <th>Актёры</th>
+                </tr>
+                <tr th:each="movie : ${movies}">
+                    <td th:text="${movie.id}"></td>
+                    <td th:text="${movie.name}"></td>
+                    <td th:text="${movie.country}"></td>
+                    <td th:text="${movie.date}"></td>
+                    <td th:text="${movie.directors}"></td>
+                    <td th:text="${movie.actors}"></td>
+                </tr>
+            </table>
+        </div>
+    </body>
+</html>

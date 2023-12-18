@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Добавление фильма</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+        <base href="/">
+        <link rel="stylesheet" type="text/css" href="static/main.css">
+    </head>
+    <body>
+        <div id="addMovieBlock">
+
+            <input id="name" class="inputText" type="text" placeholder="Введите название фильма">
+            <input id="country" class="inputText" type="text" placeholder="Введите страну">
+            <input id="date" type="date">
+
+            <select id="director" multiple>
+                <option disabled selected>Выберите режиссёра</option>
+                <option th:each="person : ${persons}" th:text="${person.name}">person</option>
+            </select>
+
+            <select id="actor" multiple>
+                <option disabled selected>Выберите актёров</option>
+                <option th:each="person : ${persons}" th:text="${person.name}">person</option>
+            </select>
+
+            <input id="okButton" type="button" class="button" value="Добавить фильм">
+        </div>
+    </body>
+
+    <script>
+        $('#okButton').click(function() {
+
+            var directorsTemp = $('#director').val();
+            var directors = [];
+
+            for(var i = 0; i < directorsTemp.lenght; i++) {
+                directors.push(directorsTemp[i])
+            } 
+
+            console.log(typeof directors);
+            console.log(directors);
+
+            var movie = { 
+                name: $('#name').val(),
+                country: $('#country').val(),
+                date: $('#date').val(),
+                directors: $('#director').val(),
+                actors: $('#actor').val()
+            };
+
+            $.ajax({
+                url: '/save_movie',
+                type: 'POST',
+                data: JSON.stringify(movie),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log('Запрос успешно выполнен');
+                    location.reload()
+                },
+                error: function(error) {
+                    console.log('Произошла ошибка при выполнении запроса:', error);
+                }
+            });
+
+        });
+    </script>
+</html>

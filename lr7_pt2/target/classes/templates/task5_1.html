@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Задание 5</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+        <base href="/">
+        <link rel="stylesheet" type="text/css" href="static/main.css">
+    </head>
+    <body>
+        <div id="showMoviesBlock">
+            <input id="n" class="inputText" type="text" placeholder="Введите число N">
+
+            <input id="okButton" type="button" class="button" value="Вперёд">
+        </div>
+    </body>
+
+    <script>
+        $('#okButton').click(function() {
+            var n = $('#n').val();
+
+            window.location.href = 'http://localhost:8081/task5/' + n;
+        });
+    </script>
+</html>

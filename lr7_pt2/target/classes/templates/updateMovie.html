@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html xmlns:th="https://www.thymleaf.org">
+    <head>
+        <meta charset="UTF-8">
+        <title>Редактировать фильм</title>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+
+        <base href="/">
+        <link rel="stylesheet" type="text/css" href="static/main.css">
+    </head>
+    <body>
+   
+        <div id="showMoviesBlock">
+            <table>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Страна</th>
+                    <th>Дата выхода</th>
+                    <th>Режиссёры</th>
+                    <th>Актёры</th>
+                </tr>
+                <tr th:each="movie : ${movies}">
+                    <td th:text="${movie.id}"></td>
+                    <td th:text="${movie.name}"></td>
+                    <td th:text="${movie.country}"></td>
+                    <td th:text="${movie.date}"></td>
+                    <td th:text="${movie.directors}"></td>
+                    <td th:text="${movie.actors}"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="updateMovieBlock">
+
+            <input id="name" class="inputText" type="text" placeholder="Введите название фильма">
+            <input id="country" class="inputText" type="text" placeholder="Введите страну">
+            <input id="date" type="date">
+
+            <select id="director" multiple>
+                <option disabled selected>Выберите режиссёра</option>
+                <option>Пункт 1</option>
+                <option>Пункт 2</option>
+                <option th:each="person : ${persons}" th:text="${person.name}">person</option>
+            </select>
+
+            <select id="actor" multiple>
+                <option disabled selected>Выберите актёров</option>
+                <option th:each="person : ${persons}" th:text="${person.name}">person</option>
+            </select>
+
+            <input id="id" class="inputText" type="text" placeholder="Введите ID фильма">
+
+            <input id="okButton" type="button" class="button" value="Редактировать фильм">
+        </div> 
+    
+    </body>
+
+    <script>
+        $('#okButton').click(function() {
+
+            var directorsTemp = $('#director').val();
+            var directors = [];
+
+            for(var i = 0; i < directorsTemp.lenght; i++) {
+                directors.push(directorsTemp[i])
+            } 
+
+            console.log(typeof directors);
+            console.log(directors);
+
+            var movie = { 
+                name: $('#name').val(),
+                country: $('#country').val(),
+                date: $('#date').val(),
+                directors: $('#director').val(),
+                actors: $('#actor').val()
+            };
+
+            var id = $('#id').val();
+
+            $.ajax({
+                url: '/update_movie/' + id,
+                type: 'POST',
+                data: JSON.stringify(movie),
+                contentType: 'application/json',
+                success: function(response) {
+                    console.log('Запрос успешно выполнен');
+
+                    if (response == false) {
+                        alert("Фильм с ID = " + id + " не найден!")
+                    } else {
+                        location.reload()
+                    }
+                },
+                error: function(error) {
+                    console.log('Произошла ошибка при выполнении запроса:', error);
+                }
+            });
+
+        });
+    </script>
+</html>
